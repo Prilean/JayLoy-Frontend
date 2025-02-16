@@ -22,13 +22,6 @@ export default function LoginPage() {
             <Link href="#" className="hover:underline description-small flex justify-end">Forget password</Link>
           </div>
 
-          {/* <div className="text-center description-small">
-            By creating your account, you're agreeing to our{" "}
-            <Link href="#" className="underline hover:text-primary">Terms and Conditions</Link>{" "}
-            and{" "}
-            <Link href="#" className="underline hover:text-primary">Privacy Policy</Link>.
-          </div> */}
-
           <Button className="green-button !text-white">Log In</Button>
 
           <div className="relative description-small">

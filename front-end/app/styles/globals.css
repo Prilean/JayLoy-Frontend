@@ -88,6 +88,18 @@ body {
     @apply font-poppins text-[24px] font-bold text-black;
   }
 
+  .description-big-bold {
+    @apply font-poppins text-[20px] font-bold text-black;
+  }
+
+  .description-big-medium {
+    @apply font-poppins text-[20px] font-medium text-black;
+  }
+
+  .description-bold {
+    @apply font-poppins text-[16px] font-bold text-black;
+  }
+
   .description-medium {
     @apply font-poppins text-[16px] font-medium text-black;
   }

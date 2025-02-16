@@ -21,14 +21,16 @@ export default {
 			lightred: '#F25858',
   			purple: '#9747FF',
   			blue: '#304FFE',
-  			Orange: 'FFAE4C',
+			orange: '#FFAE4C',
   			indigo: '#5856D6',
-  			pink: '#AF52DE',
+  			pink: '#FF2D55',
   			green: '#34C759',
   			brown: '#A2845E',
   			mint: '#00C7BE',
-  			Aqua: '#32ADE6',
+  			cyan: '#32ADE6',
   			gray: '#909090',
+			lightorange: '#FFD3B6',
+
 
 			foreground: 'hsl(var(--foreground))',
   			card: {
