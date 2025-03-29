@@ -32,14 +32,14 @@ function TermsPage() {
       />
       <TabWithCancelButton text="Terms & Privacy Policy" onClick={() => router.push("/profile")} />
 
-      <div className="min-h-screen pt-16 px-4 bg-background">
+      <div className="min-h-screen pt-16 px-4 bg-background pb-24">
         <div className="max-w-md mx-auto">
           {/* Logo and Title */}
           <div className="flex flex-col items-center mb-8">
             <div className="w-[100px] h-[100px] relative mb-2">
-              <Image src={logo} alt="Luy Smart Logo" fill className="object-contain" />
+              <Image src={logo} alt="JayLoy Logo" fill className="object-contain" />
             </div>
-            <h1 className="text-xl font-medium">Luy Smart</h1>
+            <h1 className="text-xl font-medium">JayLoy</h1>
           </div>
 
           {/* Terms Content */}
@@ -53,7 +53,7 @@ function TermsPage() {
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
                     <p className="text-sm">
-                      By using AhoSmart, you agree to these Terms and our Privacy Policy. If you don&apos;t agree, please
+                      By using JayLoy, you agree to these Terms and our Privacy Policy. If you don&apos;t agree, please
                       don&apos;t use the app.
                     </p>
                   </li>
@@ -66,7 +66,7 @@ function TermsPage() {
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
                     <p className="text-sm">
-                      AhoSmart is designed for personal use in tracking food waste. You agree not to misuse the app for
+                      JayLoy is designed for personal use in tracking food waste. You agree not to misuse the app for
                       any illegal or unauthorized purposes.
                     </p>
                   </li>
@@ -117,7 +117,7 @@ function TermsPage() {
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
                     <p className="text-sm">
-                      All content and intellectual property within the app belong to Luy Smart. You may not copy or
+                      All content and intellectual property within the app belong to JayLoy. You may not copy or
                       distribute any part of the app without permission.
                     </p>
                   </li>

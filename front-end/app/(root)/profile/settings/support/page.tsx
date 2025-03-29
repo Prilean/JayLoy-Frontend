@@ -11,7 +11,7 @@ function SupportPage() {
     <>
       <TabWithCancelButton text="Help & Support" onClick={() => router.push("/profile/settings")} />
 
-      <div className="min-h-screen pt-16 px-4 bg-background">
+      <div className="min-h-screen pt-16 px-4 bg-background pb-24">
         <div className="max-w-md mx-auto">
           {/* Contact Us Section */}
           <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
@@ -27,20 +27,20 @@ function SupportPage() {
 
               <div>
                 <p className="font-medium mb-1">Email:</p>
-                <a href="mailto:supporth@luysmart.com" className="text-primary">
-                  supporth@luysmart.com
+                <a href="mailto:supporth@jayloy.com" className="text-primary">
+                  supporth@jayloy.com
                 </a>
               </div>
 
               <div>
                 <p className="font-medium mb-1">Facebook:</p>
                 <a
-                  href="https://facebook.com/LuySmart"
+                  href="https://facebook.com/jayloy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary"
                 >
-                  LuySmart
+                  JayLoy
                 </a>
               </div>
 

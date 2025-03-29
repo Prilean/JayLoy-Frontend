@@ -78,7 +78,7 @@ function SettingsPage() {
 
   const settingsItems = [
     {
-      title: "Account Management",
+      title: "Change password",
       icon: <Icon icon="ph:user-fill" className="text-primary" width="24" height="24" />,
       route: "/profile/settings/accountManagement",
       highlight: false,
