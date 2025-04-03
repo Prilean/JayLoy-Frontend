@@ -9,7 +9,6 @@ import { TransactionItem } from "@/components/TransactionItem";
 import { TransactionDetail } from "@/components/categoryTransaction-detail";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
-import NavBar from "@/layouts/NavBar";
 import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
@@ -224,9 +223,6 @@ export default function HomePage() {
           onDelete={handleDelete}
         />
       )}
-
-      {/* Navigation Bar */}
-      <NavBar />
     </div>
   );
 }

@@ -16,8 +16,6 @@ export function numberConverter(num: number): string {
     formatted = (absNum / 1_000_000).toFixed(2) + "M";
   } else if (absNum >= 1_000) { 
     formatted = (absNum / 1_000).toFixed(2) + "k";
-  } else if (absNum >= 100) {  // Fixed typo: 1_00 → 100
-    formatted = (absNum / 1_000).toFixed(2) + "k";
   } else {
     formatted = absNum.toFixed(2);
   }

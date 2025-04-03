@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import '../styles/globals.css';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
-
+import NavBar from '@/layouts/NavBar';
 
 export default function RootLayout({
   children,
@@ -27,5 +27,10 @@ export default function RootLayout({
     return <LoadingSpinner />;
   }
 
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-background">
+      {children}
+      <NavBar />
+    </div>
+  );
 }

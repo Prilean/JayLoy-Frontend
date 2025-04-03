@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import dayjs from "dayjs";
 import {
   Card,
@@ -12,7 +12,8 @@ import {
 import BudgetBarChart from "./components/barChart";
 import PieChartComponent from "./components/pieChartForReport";
 import AccountCard from "./components/card";
-import { numberConverter } from "@/lib/utils"; 
+import { numberConverter } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
 interface PieData {
   name: string;
@@ -20,67 +21,51 @@ interface PieData {
   color: string;
 }
 
-const Page: React.FC = () => {
-  const [reportData, setReportData] = useState<{
-    total_income: number;
-    total_expense: number;
-    total_remaining: number;
-  } | null>(null);
+interface YearlyReport {
+  total_income: number;
+  total_expense: number;
+  total_remaining: number;
+}
 
-  // Fetch data
-  const getAuthHeaders = () => ({
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+interface BalanceData {
+  amount: number;
+}
+
+const getAuthHeaders = () => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+});
+
+const fetchData = async <T,>(url: string): Promise<T> => {
+  const res = await fetch(url, { method: "GET", headers: getAuthHeaders() });
+  if (!res.ok) throw new Error("Failed to fetch data");
+  return await res.json();
+};
+
+const Page: React.FC = () => {
+  const year = dayjs().year();
+  
+  // Fetch yearly report with React Query
+  const { data: reportData, error: reportError } = useQuery<YearlyReport>({
+    queryKey: ['yearlyReport', year],
+    queryFn: () => fetchData<YearlyReport>(`${process.env.NEXT_PUBLIC_API_URL}/accounts/yearlyreport?year=${year}`),
+    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+    gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
   });
 
-  const fetchData = async (url: string) => {
-    try {
-      const res = await fetch(url, { method: "GET", headers: getAuthHeaders() });
-      if (!res.ok) throw new Error("Failed to fetch data");
-      return await res.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      return null;
-    }
-  };
-
-  // Yearly reports
-  const [totalBalance, setTotalBalance] = useState<0 | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const year = dayjs().year();
-
-  const fetchYearlyReport = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    const data = await fetchData(`${process.env.NEXT_PUBLIC_API_URL}/accounts/yearlyreport?year=${year}`);
-    if (data) {
-      setReportData(data);
-    } else {
-      setError("Failed to fetch the report");
-    }
-  };
-
-  useEffect(() => {
-    fetchYearlyReport();
-  }); // Added dependency array for clarity
-
-  // Fetch Balance
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const balanceData = await fetchData(`${process.env.NEXT_PUBLIC_API_URL}/accounts/balance`);
-      if (balanceData) {
-        setTotalBalance(balanceData.amount);
-      } else {
-        setError("Failed to fetch the balance");
-      }
-    };
-    fetchBalance();
-  }); // Added dependency array for clarity
+  // Fetch balance with React Query
+  const { data: balanceData, error: balanceError } = useQuery<BalanceData>({
+    queryKey: ['balance'],
+    queryFn: () => fetchData<BalanceData>(`${process.env.NEXT_PUBLIC_API_URL}/accounts/balance`),
+    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+    gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
+  });
 
   const currentYear = dayjs().year();
-  const total_expense = reportData ? reportData.total_expense / 100 : 0;
-  const total_income = reportData ? reportData.total_income / 100 : 0;
-  const total_remaining = reportData ? reportData.total_remaining / 100 : 0;
-  const total_balance = totalBalance ? totalBalance / 100 : 0;
+  const total_expense = reportData?.total_expense ? reportData.total_expense / 100 : 0;
+  const total_income = reportData?.total_income ? reportData.total_income / 100 : 0;
+  const total_remaining = reportData?.total_remaining ? reportData.total_remaining / 100 : 0;
+  const total_balance = balanceData?.amount ? balanceData.amount / 100 : 0;
 
   const totalReport: PieData[] = reportData
     ? [
@@ -96,9 +81,11 @@ const Page: React.FC = () => {
 
   const displayReport = totalReport.slice(1, 3);
 
+  if (reportError) return <div className="text-red-500">Error loading report: {reportError.message}</div>;
+  if (balanceError) return <div className="text-red-500">Error loading balance: {balanceError.message}</div>;
+
   return (
     <div className="space-y-4 min-h-screen pb-24 flex flex-col items-center px-4">
-      {error && <p className="text-red-500">{error}</p>}
       {/* Account Card */}
       <div className="w-full h-40 mt-16 rounded-xl relative overflow-hidden">
         <AccountCard value={numberConverter(total_balance)} />
@@ -112,22 +99,22 @@ const Page: React.FC = () => {
           <CardContent>
             {/* Pie Chart */}
             <div className="flex flex-col items-center">
-            <PieChartComponent
-              pieData={displayReport}
-              numberConverter={numberConverter}
-              remainingBalance={total_income}
-            />
-            <div className="flex flex-row justify-between w-full">
-              {displayReport.map((entry, index) => (
-                <div key={index} className="w-full flex">
-                  <div className="flex flex-col items-center w-full p-4">
-                    <div className="text-white font-sm font-thin px-2 py-1 rounded-full" style={{ background: entry.color }}>
-                    {entry.name}
+              <PieChartComponent
+                pieData={displayReport}
+                numberConverter={numberConverter}
+                remainingBalance={total_income}
+              />
+              <div className="flex flex-row justify-between w-full">
+                {displayReport.map((entry, index) => (
+                  <div key={index} className="w-full flex">
+                    <div className="flex flex-col items-center w-full p-4">
+                      <div className="text-white font-sm font-thin px-2 py-1 rounded-full" style={{ background: entry.color }}>
+                        {entry.name}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
             </div>
              
             {/* Total Income/Expense/Remaining Report */}

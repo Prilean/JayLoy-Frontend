@@ -323,8 +323,6 @@ export default function ChartPage() {
           scrollbar-width: none;
         }
       `}</style>
-
-      <NavBar />
     </div>
   );
 }
